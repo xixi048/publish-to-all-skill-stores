@@ -2,6 +2,34 @@
 
 本文件遵循 [Keep a Changelog](https://keepachangelog.com/zh-CN/1.1.0/)；版本号遵循语义化版本。
 
+## [2.0.1] - 2026-10-26
+
+把 2.0.0 里"只是列出来"的三类渠道打穿成可执行结论，并补上两个实测会被踩死的坑。
+
+### Added
+
+- **MCP 侧真的落地了**：仓库内置 `mcp/server.py`（stdio / JSON-RPC 2.0 / 零依赖），
+  暴露 `skill_store_registry` / `skill_preflight` / `skill_build_package`，README 给了客户端配置
+- **自建发现端点已上线**：`docs/.well-known/agent-skills/index.json` 经 GitHub Pages 发布，
+  实测 `https://xixi048.github.io/publish-to-all-skill-stores/.well-known/agent-skills/index.json` 返回 200
+- **PR 型渠道的政策实测表**：VoltAgent/awesome-agent-skills = `all`（已开 PR #1269）；
+  ComposioHQ/awesome-claude-skills = **`collaborators_only`，外部开不了 PR**（1856 个 open issue）
+
+### Fixed
+
+- **GitHub Pages + Jekyll 会跳过点开头的目录**：`.well-known` 必须配一个空的 `docs/.nojekyll`，
+  否则文件推上去了但永远 404
+- **Official MCP Registry 的真实门槛**：`server.json` 的 `packages[]` 必填
+  `registry_type / identifier / version / transport`，即必须先发 npm / PyPI / OCI 包，
+  没有包就没有 identifier —— 光有 GitHub 仓库上不了官方 Registry
+- **mcp.so**：免费提交要先 Sign In，未登录时表单只给 `$39` 的付费快通道；
+  **PulseMCP** 的 `/submit` 会 ERR_ABORTED 跳到内容页；**cursor.directory** 有 429 人机校验
+
+### Changed
+
+- 国内第二批（Kimi Claw / 小红书 Red Skill / 美团虾345 / WorkBuddy）逐个查了入口：
+  **均无法确认存在公开的技能商店提交入口**，继续以 △ 标注，不写进可执行清单
+
 ## [2.0.0] - 2026-10-26
 
 第二版：把「经验」升级成「可执行的渠道全景 + 判定方法」，并把渠道表从 24 扩到 36。
