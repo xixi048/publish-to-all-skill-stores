@@ -73,6 +73,34 @@ python skills/publish-to-all-skill-stores/scripts/submit_all.py --all --repo <gi
 Directory sites only index `skills/<name>/SKILL.md`. A skill sitting at the repo root is **never discovered
 and never errors** — it simply stays invisible. Move it, fix the relative paths, re-submit.
 
+## Use as an MCP server
+
+The same three tools are exposed over MCP (stdio, zero dependencies), so any MCP-capable agent can
+call them directly:
+
+```json
+{
+  "mcpServers": {
+    "publish-to-all-skill-stores": {
+      "command": "python",
+      "args": ["C:/path/to/publish-to-all-skill-stores/mcp/server.py"]
+    }
+  }
+}
+```
+
+Tools: `skill_store_registry` (36 channels), `skill_preflight` (readiness check),
+`skill_build_package` (zip shape stores ask for).
+
+## Machine-discoverable index
+
+`docs/.well-known/agent-skills/index.json` is published on GitHub Pages so agents that honour the
+`/.well-known/agent-skills/index.json` convention can find these skills without any store:
+
+```text
+https://xixi048.github.io/publish-to-all-skill-stores/.well-known/agent-skills/index.json
+```
+
 ## Requirements
 
 Python 3.8+, standard library only. No network calls from the scripts except the public endpoints you ask for.
