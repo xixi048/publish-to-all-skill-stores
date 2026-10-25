@@ -109,7 +109,20 @@ Official MCP Registry ／ **Smithery**（smithery.ai）／ **Glama**（glama.ai�
 为什么单列：这些只收「跑着的 MCP server（STDIO / SSE / StreamableHTTP）」。本地脚本型技能要上，得先包成 MCP ——
 那是另一个项目。但如果技能本来就是服务，这里是流量最集中的地方。
 
-### 7.4 官方与社区列表（PR 型）
+### 7.4 官方与社区列表（PR 型）——已逐个查过 pull_request_creation_policy
+
+| 仓库 | 外部能否开 PR | 结论 |
+|---|---|---|
+| **VoltAgent/awesome-agent-skills**（36k★） | ✅ `all` | **已开 PR #1269**，加在 Development and Testing 分类 |
+| trailofbits/skills-curated | ✅ `all` | 可开，但它是安全团队的 vetted 目录，非安全类技能放进去不合适 |
+| **ComposioHQ/awesome-claude-skills**（78k★） | ❌ `collaborators_only` | **外部根本开不了 PR**，1856 个 open issue —— 别浪费时间 |
+| anthropics/skills | —— | 官方示例仓库，社区技能不进 |
+| vivy-yi/awesome-skills | —— | 抓取型清单，等它自己抓 |
+
+> 教训：awesome 列表的 CONTRIBUTING 写得再热情，也要先看 `pull_request_creation_policy`。
+> 一个 `gh api repos/<owner>/<repo>` 就能省掉一次白干。
+
+### 7.4b 官方与社区列表（说明）
 
 | 渠道 | 说明 |
 |---|---|
@@ -126,7 +139,38 @@ Official MCP Registry ／ **Smithery**（smithery.ai）／ **Glama**（glama.ai�
 | **美团 虾345（xia345）** | 美团 | Skill Hunter 跨平台聚合 SkillHub / ClawHub；"入驻即入全生态" | △ 域名未核实（xia345.com 实为 AI345 资讯站） |
 | **WorkBuddy 技能中心** | 腾讯生态 agent | 技能目录，`.workbuddy/skills/` 本地形态 | △ |
 
-### 7.6 一个被忽略的免费渠道：自建发现端点
+### 7.6 自建发现端点 —— 已实测跑通（两个技能都进去）
+
+做法：仓库开 GitHub Pages，把索引放在 `docs/.well-known/agent-skills/index.json`。实测地址：
+
+```text
+https://xixi048.github.io/publish-to-all-skill-stores/.well-known/agent-skills/index.json   # HTTP 200
+```
+
+**坑（一定会踩）**：GitHub Pages 默认跑 Jekyll，而 **Jekyll 会跳过以点开头的目录**，
+`.well-known` 直接 404。必须加一个空的 `docs/.nojekyll`。不加的话你会以为"文件推上去了但打不开"。
+
+索引内容就是一组 `{name, description, version, source, path, install}`，
+`install` 同时给 `npx skills add` 与 `/plugin marketplace add` 两条命令。
+
+### 7.7 MCP 侧：已经从"清单"变成"能跑的东西"
+
+`publish-to-all-skill-stores` 仓库里现在有 `mcp/server.py`（stdio、零依赖、JSON-RPC 2.0），
+把三个工具暴露给任何 MCP 客户端：`skill_store_registry` / `skill_preflight` / `skill_build_package`。
+
+客户端配置：
+
+```json
+{ "mcpServers": { "publish-to-all-skill-stores": {
+    "command": "python", "args": ["<repo>/mcp/server.py"] } } }
+```
+
+**但 Official MCP Registry 仍然上不了**：它的 `server.json` 要求 `packages[]`，而 `packages` 的必填字段是
+`registry_type / identifier / version / transport` —— 也就是必须先发一个 npm / PyPI / OCI 包。
+没有 npm/PyPI 账号就拿不到 `identifier`。Glama / mcp.so / PulseMCP / Cursor Directory 相对宽松，
+可以直接提交 GitHub 仓库地址，属于"下一步"。
+
+### 7.8 一个被忽略的免费渠道：自建发现端点
 
 在自己的站点或仓库放 `/.well-known/agent-skills/index.json`，任何支持该约定的 agent 都能直接发现你的技能源。
 不依赖任何商店审核，适合自持分发的团队。
