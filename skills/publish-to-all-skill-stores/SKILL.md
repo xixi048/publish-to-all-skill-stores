@@ -63,6 +63,11 @@ metadata:
 必须单独打 `skillroot` 包：`python scripts/build_package.py <repo> skills/<name> --out dist`。
 打包前删掉 `__pycache__`（`.pyc` 会被原样打进 zip）。
 
+**英文区用英文，中文区用中文。** 同一条 listing 在 ClawHub / skillstore / SkillsMP / skillbay 上写英文
+（标题、摘要、审核说明、before-after 证据全英文）；在腾讯 SkillHub / Cow Skill Hub / 扣子 / AgentMore 上写中文
+（显示名、简介、分类直接用中文，别把英文 description 粘过去）。混用会显得像机翻，直接影响审核印象。
+SKILL.md 的 frontmatter 本身保持英文（它是给模型读的），本地化只发生在**商店的展示字段**上。
+
 **能 GitHub 导入就绝不本地上传。** 很多渠道的发布页同时提供「上传 zip」和「从 GitHub 导入」。
 一律选 GitHub 导入：仓库是唯一真源，push 就能更新版本，不会出现商店版本与仓库不一致；
 而且导入器通常能直接识别 `skills/<name>/` 布局。只有平台不支持导入或包需要在仓库外裁剪时才用 zip。
