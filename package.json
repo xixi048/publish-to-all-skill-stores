@@ -1,0 +1,13 @@
+{
+  "name": "publish-to-all-skill-stores-mcp",
+  "version": "2.0.1",
+  "description": "MCP server for publish-to-all-skill-stores: list the 36 agent-skill stores, run a readiness check, and build the packages each store expects.",
+  "bin": { "publish-to-all-skill-stores-mcp": "bin/mcp.js" },
+  "files": ["bin/mcp.js", "mcp/server.py", "skills/publish-to-all-skill-stores"],
+  "keywords": ["mcp", "model-context-protocol", "agent-skills", "skill-md", "publishing", "marketplace", "claude-skills"],
+  "author": "xixi048",
+  "license": "MIT",
+  "repository": { "type": "git", "url": "git+https://github.com/xixi048/publish-to-all-skill-stores.git" },
+  "homepage": "https://github.com/xixi048/publish-to-all-skill-stores",
+  "engines": { "node": ">=18" }
+}

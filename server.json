@@ -1,0 +1,23 @@
+{
+  "$schema": "https://static.modelcontextprotocol.io/schemas/2025-12-11/server.schema.json",
+  "name": "io.github.xixi048/create-all-cg-save",
+  "description": "Byte-patch CG unlock flags in offline single-player game saves, with backup and rollback.",
+  "version": "1.3.0",
+  "repository": {
+    "url": "https://github.com/xixi048/create-all-cg-save",
+    "source": "github",
+    "id": "1127110039"
+  },
+  "packages": [
+    {
+      "registryType": "mcpb",
+      "registryBaseUrl": "https://github.com",
+      "identifier": "xixi048/create-all-cg-save",
+      "version": "1.3.0",
+      "fileSha256": "dd3555ae0dbff23df8e3632adab89aa3227853af40a6499b821650c4830911de",
+      "transport": {
+        "type": "stdio"
+      }
+    }
+  ]
+}
