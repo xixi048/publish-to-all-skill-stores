@@ -1,6 +1,6 @@
 ---
-name: skill-store-publisher
-description: "Push an existing SKILL.md skill (or a whole skill repo) to agent-skill marketplaces at home and abroad, free and paid. Use it when the user asks to publish / upload / list / 上架 / 推送 a skill to skill stores, skill marketplaces, 技能商店, 技能市场, plugin marketplaces, or asks why a published skill is not being discovered. Covers repo layout for auto-indexers, public submit APIs, GitHub-PR registries, login-gated CLIs, platform-hosted stores that need porting, and how to price a paid listing. 关键词：上架技能、推送技能、技能商店、技能市场、skill store、marketplace、publish skill、被收录、署名。"
+name: publish-to-all-skill-stores
+description: "Publish one skill to every agent-skill store at once — at home and abroad, free and paid. Use it when the user asks to publish / upload / list / 上架 / 推送 a skill to skill stores, skill marketplaces, 技能商店, 技能市场, plugin marketplaces, or asks why a published skill is not being discovered. Covers repo layout for auto-indexers, public submit APIs, GitHub-PR registries, login-gated CLIs, platform-hosted stores that need porting, and how to price a paid listing. 关键词：上架技能、推送技能、技能商店、技能市场、skill store、marketplace、publish skill、被收录、署名。"
 license: MIT
 metadata:
   author: xixi048
@@ -8,7 +8,7 @@ metadata:
   language: zh-CN
 ---
 
-# 技能商店全量推送
+# 同时上架所有 Skill 商店
 
 把一个已经能跑的技能推到尽可能多的分发渠道，并且**分清哪些能脚本化完成、哪些必须用户本人动手**。
 
@@ -31,6 +31,10 @@ metadata:
 
 ## 推送顺序（照这个顺序做，返工最少）
 
+0. **先上 GitHub，再谈商店。** 仓库是所有下游的根：爬取型目录站靠它、PR 型渠道靠它、
+   多数平台直接来 clone。**默认私有**（不开源），但要**先问用户一句要不要开源**，不要自己定。
+   并告知这个交换：*私有仓库 = 自动索引型渠道（skills.sh / SkillsMP / claude-plugins.dev）全部失效*，
+   只能走 zip 上传与平台托管；公开则反之。用户选私有时，把重心放到需要登录的渠道。
 1. **先修仓库，再谈提交**（顺序错了全白干）
    - 技能必须放在 `skills/<name>/SKILL.md`
    - 加 `.claude-plugin/marketplace.json`（顺带成为 Claude Code 插件市场）

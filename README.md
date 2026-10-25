@@ -1,8 +1,8 @@
-# skill-store-publisher
+# publish-to-all-skill-stores
 
 [![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 
-> An agent skill for pushing an existing `SKILL.md` skill to agent-skill marketplaces — at home and abroad,
+> 同时上架所有 Skill 商店 · an agent skill for pushing an existing `SKILL.md` skill to agent-skill marketplaces — at home and abroad,
 > free and paid — without wasting a week rediscovering how each one actually accepts a submission.
 
 **中文说明见下。**
@@ -23,17 +23,17 @@ on the ones that will never accept a file drop:
 ## Install
 
 ```bash
-npx skills add xixi048/skill-store-publisher
+npx skills add xixi048/publish-to-all-skill-stores
 ```
 
 ```text
-/plugin marketplace add xixi048/skill-store-publisher
+/plugin marketplace add xixi048/publish-to-all-skill-stores
 ```
 
 ## What's inside
 
 ```
-skills/skill-store-publisher/
+skills/publish-to-all-skill-stores/
 ├── SKILL.md                       the decision-first workflow
 ├── references/
 │   ├── store-registry.md          24 channels: region, pricing, form, verification level
@@ -50,16 +50,16 @@ skills/skill-store-publisher/
 
 ```bash
 # 1. readiness check — ERROR means don't submit yet
-python skills/skill-store-publisher/scripts/preflight.py <repo>/skills/<name>
+python skills/publish-to-all-skill-stores/scripts/preflight.py <repo>/skills/<name>
 
 # 2. build the package shapes
-python skills/skill-store-publisher/scripts/build_package.py <repo> skills/<name> --out dist
+python skills/publish-to-all-skill-stores/scripts/build_package.py <repo> skills/<name> --out dist
 
 # 3. see every channel and its submission form
-python skills/skill-store-publisher/scripts/submit_all.py --registry
+python skills/publish-to-all-skill-stores/scripts/submit_all.py --registry
 
 # 4. batch submit the ones that need no login
-python skills/skill-store-publisher/scripts/submit_all.py --all --repo <github-url>
+python skills/publish-to-all-skill-stores/scripts/submit_all.py --all --repo <github-url>
 ```
 
 ## The one rule that pays for itself
