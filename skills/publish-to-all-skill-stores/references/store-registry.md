@@ -82,3 +82,54 @@
 | hermeshub / skilldock.io / agentskills.io | 只在二手聚合文档里出现过，查不到实体 |
 | skillsplayground.com | 全站 403 |
 | agentskills.my / skillregistry.io | 连不上 |
+
+## 七、第二轮补遗（第一版容易漏掉的一批）
+
+第一版只盯「SKILL.md 原生商店」，漏了三类：MCP 侧目录、IDE 内置目录、国内非大厂玩家。
+下面这些都实测过域名可达（2026-10），**验证等级**照旧。
+
+### 7.1 又一个真·技能市场
+
+| 渠道 | 地址 | 形态 | 验证 |
+|---|---|---|---|
+| **LobeHub Skills** | lobehub.com/skills「Agent Skills Marketplace」 | 无 `/submit` 入口，自动索引 + 账号提交 | ✅ 页面可达 |
+
+### 7.2 CLI / 注册中心
+
+| 渠道 | 地址 | 形态 | 验证 |
+|---|---|---|---|
+| **agentskills.in** | agentskills.in「Universal Skill Manager」 | CLI 型，无网页提交页 | ✅ |
+| **讯飞 Astron SkillHub** | skill.xfyun.cn/publish | **有发布页**，需讯飞账号（中文区） | ✅ |
+
+### 7.3 MCP 侧目录（相邻赛道，需交付可跑的 MCP 服务）
+
+Official MCP Registry ／ **Smithery**（smithery.ai）／ **Glama**（glama.ai）／
+**mcp.so** ／ **PulseMCP**（pulsemcp.com）／ mcp.run ／ mcphub.io ／ **Cursor Directory**（cursor.directory，有 Vercel 人机校验）
+
+为什么单列：这些只收「跑着的 MCP server（STDIO / SSE / StreamableHTTP）」。本地脚本型技能要上，得先包成 MCP ——
+那是另一个项目。但如果技能本来就是服务，这里是流量最集中的地方。
+
+### 7.4 官方与社区列表（PR 型）
+
+| 渠道 | 说明 |
+|---|---|
+| **anthropics/skills** | 官方示例仓库，PR 新增 `skills/<name>/`；进了这里等于拿到事实标准背书 |
+| **Claude Connectors Directory** | 官方连接器目录，需审核 |
+| ComposioHQ/awesome-claude-skills · VoltAgent/awesome-agent-skills · hesreallyhim/awesome-claude-code · trailofbits/skills-curated · vivy-yi/awesome-skills | Awesome 列表群，PR 加一行/一个目录；单条 PR 价值低，但被抓取概率高 |
+
+### 7.5 国内第二批（媒体口径，多为 △）
+
+| 渠道 | 归属 | 形态 | 验证 |
+|---|---|---|---|
+| **月之暗面 Kimi Claw** | 月之暗面 | 平台型 | △ |
+| **小红书 Red Skill** | 小红书 | 仅支持 Markdown 等有限格式 | △ |
+| **美团 虾345（xia345）** | 美团 | Skill Hunter 跨平台聚合 SkillHub / ClawHub；"入驻即入全生态" | △ 域名未核实（xia345.com 实为 AI345 资讯站） |
+| **WorkBuddy 技能中心** | 腾讯生态 agent | 技能目录，`.workbuddy/skills/` 本地形态 | △ |
+
+### 7.6 一个被忽略的免费渠道：自建发现端点
+
+在自己的站点或仓库放 `/.well-known/agent-skills/index.json`，任何支持该约定的 agent 都能直接发现你的技能源。
+不依赖任何商店审核，适合自持分发的团队。
+
+> 教训：**"商店清单"本身是会长大的。** 每轮推送前重新扫一遍（GitHub topic 搜索 + 关键词检索
+> "skill marketplace / registry / directory"），别拿上一轮的清单当全集。
