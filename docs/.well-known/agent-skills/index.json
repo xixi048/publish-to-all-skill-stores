@@ -1,13 +1,16 @@
 {
   "$schema": "https://agentskills.io/schema/well-known-index.json",
   "version": 1,
-  "publisher": { "name": "xixi048", "url": "https://github.com/xixi048" },
+  "publisher": {
+    "name": "xixi048",
+    "url": "https://github.com/xixi048"
+  },
   "updated": "2026-10-26",
   "skills": [
     {
       "name": "publish-to-all-skill-stores",
       "description": "Publish one SKILL.md skill to every agent-skill store at once — at home and abroad, free and paid.",
-      "version": "2.0.0",
+      "version": "2.0.1",
       "source": "https://github.com/xixi048/publish-to-all-skill-stores",
       "path": "skills/publish-to-all-skill-stores/SKILL.md",
       "install": {
@@ -15,12 +18,17 @@
         "plugin_marketplace": "/plugin marketplace add xixi048/publish-to-all-skill-stores"
       },
       "license": "MIT",
-      "tags": ["agent-skills", "publishing", "marketplace", "skill-md"]
+      "tags": [
+        "agent-skills",
+        "publishing",
+        "marketplace",
+        "skill-md"
+      ]
     },
     {
       "name": "create-all-cg-save",
       "description": "Create an all-CG save for local single-player games by byte-patching the unlock flags, with backup and one-command rollback.",
-      "version": "1.2.0",
+      "version": "1.3.0",
       "source": "https://github.com/xixi048/create-all-cg-save",
       "path": "skills/create-all-cg-save/SKILL.md",
       "install": {
@@ -28,7 +36,26 @@
         "plugin_marketplace": "/plugin marketplace add xixi048/create-all-cg-save"
       },
       "license": "MIT",
-      "tags": ["game-saves", "rpg-maker", "binary-patch", "offline"]
+      "tags": [
+        "game-saves",
+        "rpg-maker",
+        "binary-patch",
+        "offline"
+      ],
+      "mcp": {
+        "command": "python",
+        "args": [
+          "<repo>/mcp/server.py"
+        ],
+        "tools": [
+          "save_scout",
+          "engine_inspect",
+          "plan_unlock_switches",
+          "diff_saves",
+          "infer_unlock_plan",
+          "apply_plan"
+        ]
+      }
     }
   ]
 }
