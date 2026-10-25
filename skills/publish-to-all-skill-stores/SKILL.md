@@ -4,7 +4,7 @@ description: "Publish one skill to every agent-skill store at once — at home a
 license: MIT
 metadata:
   author: xixi048
-  version: "1.0.0"
+  version: "2.0.0"
   language: zh-CN
 ---
 
@@ -23,11 +23,23 @@ metadata:
 | GitHub PR | fork → 加文件 → PR | buildwithclaude、awesome 列表、社区 registry | ✅ 完全（需 GitHub 写权限） |
 | 登录式 CLI / OAuth 表单 | 先登录再发 | ClawHub、Tank、Cow Skill Hub、agentskill.sh | ⚠️ 缺凭据就停 |
 | 平台托管 | **把技能用平台方言重写** | 扣子 Coze、智谱 AgentMore、GPT Store | ❌ 是另一个开发项目 |
+| MCP 目录 | **先把技能包成 MCP server** | Smithery、Glama、mcp.so、PulseMCP、Cursor Directory | ❌ 是另一个开发项目 |
 
 只有前四类是「推送」，第五类是「移植」。不要在第五类上假装能"一键推送"。
 
-完整渠道表（36 个，含国内外、免费与付费、验证等级；含 MCP 目录群、IDE 目录、国内第二批）见
+完整渠道表（**36 个**，含国内外、免费与付费、验证等级；含 MCP 目录群、CLI 注册中心、国内第二批）见
 [references/store-registry.md](references/store-registry.md)。
+
+**清单本身是会长大的，别拿上一轮的清单当全集。** 每轮开工前花五分钟重新扫一遍：
+
+```bash
+# GitHub：列出仍在活跃维护的技能目录/注册中心
+gh search repos --topic claude-skills --topic skill-md --sort updated --limit 40
+gh search repos "skill marketplace" --sort stars --limit 40
+# 关键词检索（会命中新站）：skill marketplace / skill registry / directory / 上架 / 技能商店
+```
+扫到新站先确认三件事：**域名能打开**、**有提交动作**（表单/API/PR/CLI）、**不是假表单**
+（判据：提交后给回执 id 或开 PR，只弹 toast 说"成功"的一律不算）。
 
 ## 推送顺序（照这个顺序做，返工最少）
 
@@ -44,7 +56,8 @@ metadata:
 3. **公开 API 型**：`python scripts/submit_all.py --all --repo <url>`
 4. **PR 型**：按各仓库 CONTRIBUTING 的位置加一个 `<name>/SKILL.md`
 5. **登录型**：先把物料备好，缺凭据就明确告诉用户"这一步需要你登录"
-6. **平台托管型**：单独评估工作量，不要混进"推送"的进度里
+6. **社区列表 / PR 型长尾**：awesome 列表与官方示例仓库，一次一条 PR，别刷
+7. **平台托管型 / MCP 目录**：单独评估工作量，不要混进"推送"的进度里
 
 判断某一步能不能自己做，只看**目标渠道要的是什么**：要 URL / 要 zip / 要 PR / 要登录态。
 别用"能不能用浏览器"当作标准——绝大多数渠道根本不看浏览器，看的是仓库状态。

@@ -20,6 +20,12 @@ on the ones that will never accept a file drop:
 | Login-gated CLI / OAuth form | log in first | ClawHub, Tank, Cow Skill Hub, agentskill.sh |
 | Platform-hosted | **port the skill** — a different project | Coze, AgentMore, GPT Store |
 
+## What's new in v2
+
+- channel registry 24 → **36** (adds LobeHub, agentskills.in, XFYUN Astron, the MCP-side directories, official repos, the CN second tier, and the `/.well-known/agent-skills/index.json` discovery endpoint)
+- a named rule for whether a store is real: **no receipt id and no PR means it did not happen**
+- paid research: **payment depends on form, not on channel** — Tencent SkillPay is 0-cut but only accepts backend-backed "Pay Skill"
+
 ## Install
 
 ```bash
