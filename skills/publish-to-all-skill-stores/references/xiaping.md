@@ -57,7 +57,7 @@ curl -s -X POST https://xiaping.coze.com/api/skills \
 |---|---|
 | `category` | 只能是这 8 个之一：效率工具 / 社交互动 / 学习教育 / 创意设计 / 数据分析 / 娱乐休闲 / 生活实用 / 其他。**传字符串数组** |
 | `trigger` | 触发词数组，用户说出这些词时 Agent 会挂载该技能，**这是被搜到的主入口** |
-| `version` | 自己写。`/api/upload` 更新时平台会**自动 +1**（2.0.4 → 2.0.5） |
+| `version` | 自己写。`/api/upload` 更新时平台会**自动 +1**，且**完全无视 zip 里 SKILL.md 写的版本号**（实测传 v2.1.0 包，回执标 2.0.6）——以回执里的 `version` 为准 |
 | `file` | zip ≤ **10 MB**，`SKILL.md` 放**zip 根目录**（不要再套一层目录） |
 | `requires_api_key` | `true` = 必须自备外部 Key 才能跑核心功能；`false` = 纯本地 / 公开接口。**主动声明**，否则平台异步 LLM 检测后填，卡片上会出现「🔑 需 API Key」标签 |
 | `pledge` | **必填**，见下一节 |
