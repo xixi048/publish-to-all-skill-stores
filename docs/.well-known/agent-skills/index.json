@@ -5,12 +5,12 @@
     "name": "xixi048",
     "url": "https://github.com/xixi048"
   },
-  "updated": "2026-10-26",
+  "updated": "2026-10-27",
   "skills": [
     {
       "name": "publish-to-all-skill-stores",
       "description": "Publish one SKILL.md skill to every agent-skill store at once — at home and abroad, free and paid.",
-      "version": "2.0.1",
+      "version": "2.0.2",
       "source": "https://github.com/xixi048/publish-to-all-skill-stores",
       "path": "skills/publish-to-all-skill-stores/SKILL.md",
       "install": {

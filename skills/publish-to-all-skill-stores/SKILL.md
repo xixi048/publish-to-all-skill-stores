@@ -4,7 +4,7 @@ description: "Publish one skill to every agent-skill store at once — at home a
 license: MIT
 metadata:
   author: xixi048
-  version: "2.0.1"
+  version: "2.0.2"
   language: zh-CN
 ---
 
@@ -113,8 +113,13 @@ SKILL.md 的 frontmatter 本身保持英文（它是给模型读的），本地�
 `description` 硬限 100 字符；包内必须声明 `mcpName` 且与 `server.json` 一致；
 命名空间要么 `login github`（`io.github.<user>/*`），要么域名验证（`cloud.<domain>/*`）。
 
+**四、文案在第一次提交前定死，尤其别写会过期的数量。** `762 words / 598 styles` 这种是当前快照，
+词库一扩就失真，而它同时躺在 README、包描述、`server.json` 和几个目录站后台里。
+写能力不写数量。目录站大多没有自助编辑入口，改一次要重发版本再排一次队。
+
 完整清单、`server.json` 约束、目录自检三件套、以及服务侧四条「不报错但结果为空」的静默错误，
-见 [references/mcp-registries.md](references/mcp-registries.md)。
+见 [references/mcp-registries.md](references/mcp-registries.md)。文案类踩坑见
+[references/pitfalls.md](references/pitfalls.md) 的「文案相关」。
 
 ## 开工前的三步体检
 
