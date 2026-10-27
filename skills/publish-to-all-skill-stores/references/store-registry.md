@@ -104,10 +104,26 @@
 ### 7.3 MCP 侧目录（相邻赛道，需交付可跑的 MCP 服务）
 
 Official MCP Registry ／ **Smithery**（smithery.ai）／ **Glama**（glama.ai）／
-**mcp.so** ／ **PulseMCP**（pulsemcp.com）／ mcp.run ／ mcphub.io ／ **Cursor Directory**（cursor.directory，有 Vercel 人机校验）
+**mcp.so** ／ **PulseMCP**（pulsemcp.com）／ **mcpservers.org** ／ **MCP Market**（mcpmarket.com）／
+**MCP.Directory**（mcp.directory）／ **Stork.AI**（stork.ai）／ mcp.run ／ mcphub.io ／
+**Cursor Directory**（cursor.directory，有 Vercel 人机校验）
 
 为什么单列：这些只收「跑着的 MCP server（STDIO / SSE / StreamableHTTP）」。本地脚本型技能要上，得先包成 MCP ——
 那是另一个项目。但如果技能本来就是服务，这里是流量最集中的地方。
+
+**同一份仓库可以两边都发。** 这次的实测结果值得记下来：
+
+| 渠道 | 一份仓库能发几种 | 备注 |
+|---|---|---|
+| **MCP.Directory** | MCP **+ Skill 各一单** | 两个表单独立、都免登录、约 24h 审核；`/submit` 下另有技能入口 |
+| **LobeHub** | MCP + Skills 分开两套 | 同一个站的 `/mcp` 与 `/skills` 互不相通 |
+
+**`pull_request_creation_policy` 之外还要看一条**：`punkpeye/awesome-mcp-servers`（8K+ star）
+的 bot 只认 **Glama 质量分 + badge**，没有分 PR 会被直接打回 —— 所以顺序是
+**Glama（要 Dockerfile + glama.json）→ 拿到分 → 才去开那个 PR**。
+
+完整的 `server.json` 约束、命名空间验证、目录自检三件套与静默错误清单，
+见 [mcp-registries.md](mcp-registries.md)。
 
 ### 7.4 官方与社区列表（PR 型）——已逐个查过 pull_request_creation_policy
 

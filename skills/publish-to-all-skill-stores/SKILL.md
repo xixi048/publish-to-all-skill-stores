@@ -89,6 +89,33 @@ SKILL.md 的 frontmatter 本身保持英文（它是给模型读的），本地�
 免费渠道保留引流版，付费渠道挂完整版或 Pro 版。具体价位与各平台分成见
 [references/paid-channels.md](references/paid-channels.md)。
 
+## MCP 侧分发（相邻赛道，别和商店混着做）
+
+同一个产品往两边发很常见：**技能是一份方法论（Markdown），MCP 是一个可调用的服务**。
+交付物完全不同，配方不能互相套。判断标准只有一条——**用户是要「AI 知道怎么做」，还是要「AI 能调用」**。
+
+三条容易踩错的：
+
+**一、有三种上架形态，只有前两种是「推送」。**
+
+| 形态 | 你要交什么 | 代表 |
+|---|---|---|
+| 元数据登记 | 一个 URL 或一份 `server.json`，服务还在你自己服务器 | 官方 Registry、mcp.so、Smithery、MCP.Directory |
+| 目录自检型 | 仓库 + `Dockerfile` + 声明文件，平台真的跑起来打分 | Glama |
+| 平台托管 | 可容器化的完整代码，**平台接管部署** | 魔搭、百炼、火山 |
+
+第三类会生成平台自己的地址，从此有两套端点要同步维护。开工前先问用户**愿不愿意把服务托管给平台**。
+
+**二、先跑通端点，再谈提交。** 目录站会真的连一次：HTTPS + `initialize` + `tools/list` + 一次真实调用。
+仓库里放一个能跑的 `verify.js` / `smoke.mjs`，比任何文案都有说服力。
+
+**三、官方 Registry 是下游的上游，值得先做。** 它只存元数据，但 PulseMCP 一类站会从它自动同步。
+`description` 硬限 100 字符；包内必须声明 `mcpName` 且与 `server.json` 一致；
+命名空间要么 `login github`（`io.github.<user>/*`），要么域名验证（`cloud.<domain>/*`）。
+
+完整清单、`server.json` 约束、目录自检三件套、以及服务侧四条「不报错但结果为空」的静默错误，
+见 [references/mcp-registries.md](references/mcp-registries.md)。
+
 ## 开工前的三步体检
 
 ```bash
