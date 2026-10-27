@@ -4,7 +4,7 @@ description: "Publish one skill to every agent-skill store at once — at home a
 license: MIT
 metadata:
   author: xixi048
-  version: "2.0.2"
+  version: "2.0.3"
   language: zh-CN
 ---
 

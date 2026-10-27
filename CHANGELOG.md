@@ -2,6 +2,28 @@
 
 本文件遵循 [Keep a Changelog](https://keepachangelog.com/zh-CN/1.1.0/)；版本号遵循语义化版本。
 
+## [2.0.3] - 2026-10-27
+
+补上此前完全缺位的一家：**WorkBuddy 开放平台**。它是国内抽成最低的付费渠道（内测 1%），
+但准入顺序很反直觉，写错顺序会白做一遍。
+
+### 新增
+
+- `paid-channels.md` 增加「一·五、WorkBuddy 开放平台」整节：
+  - 三条顺序铁律：先有 1 个过审的**免费**技能才能开收款；观察期只能发 1 个付费资产；
+    付费方式（买断/月订）过审后**不可更改**
+  - 规格上限：zip ≤3MB、目录**最多两层**、SKILL.md 在包根、头像 512×512
+  - **8 个必填字段**：通用规范只有 name + description，这里还要 display_name /
+    display_name_en / description_zh / description_en / version / author，缺一解析失败
+  - 正确姿势是**打包时注入**而非改源 SKILL.md（否则污染其他商店物料）
+  - 完整发布链路，含「付费设置默认是免费、藏在配置步骤里，要手动切」
+- `store-registry.md` 把 WorkBuddy 行从「技能目录 △」升级为付费渠道并补提交动作
+
+### 修正
+
+- 付费渠道总表原先只有 skillbay / SkillPay / Coze / 百炼，缺 WorkBuddy，
+  导致「能收费的渠道」清单本身不完整
+
 ## [2.0.2] - 2026-10-27
 
 把 MCP 这条线的**实测结论**回填，并把「文案」提升为和布局、许可证同级的前置项。

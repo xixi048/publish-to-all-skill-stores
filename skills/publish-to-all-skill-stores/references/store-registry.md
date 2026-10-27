@@ -153,7 +153,7 @@ Official MCP Registry ／ **Smithery**（smithery.ai）／ **Glama**（glama.ai�
 | **月之暗面 Kimi Claw** | 月之暗面 | 平台型 | △ |
 | **小红书 Red Skill** | 小红书 | 仅支持 Markdown 等有限格式 | △ |
 | **美团 虾345（xia345）** | 美团 | Skill Hunter 跨平台聚合 SkillHub / ClawHub；"入驻即入全生态" | △ 域名未核实（xia345.com 实为 AI345 资讯站） |
-| **WorkBuddy 技能中心** | 腾讯生态 agent | 技能目录，`.workbuddy/skills/` 本地形态 | △ |
+| **WorkBuddy 开放平台** | open.workbuddy.cn | 技能 / 专家 / 连接器；本地 `.workbuddy/skills/` 是另一回事 | 上传 zip（≤3MB、两层、8 必填字段）→ 审核 → 开收款 → 定价 | ✅ 付费，内测抽 1% |
 
 ### 7.6 自建发现端点 —— 已实测跑通（两个技能都进去）
 

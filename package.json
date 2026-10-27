@@ -1,6 +1,6 @@
 {
   "name": "publish-to-all-skill-stores-mcp",
-  "version": "2.0.2",
+  "version": "2.0.3",
   "description": "MCP server for publish-to-all-skill-stores: list the 36 agent-skill stores, run a readiness check, and build the packages each store expects.",
   "bin": { "publish-to-all-skill-stores-mcp": "bin/mcp.js" },
   "files": ["bin/mcp.js", "mcp/server.py", "skills/publish-to-all-skill-stores"],
