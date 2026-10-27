@@ -4,7 +4,7 @@ description: "Publish one skill to every agent-skill store at once — at home a
 license: MIT
 metadata:
   author: xixi048
-  version: "2.0.3"
+  version: "2.0.4"
   language: zh-CN
 ---
 
@@ -117,8 +117,14 @@ SKILL.md 的 frontmatter 本身保持英文（它是给模型读的），本地�
 词库一扩就失真，而它同时躺在 README、包描述、`server.json` 和几个目录站后台里。
 写能力不写数量。目录站大多没有自助编辑入口，改一次要重发版本再排一次队。
 
+**五、MCP 本身也能上架，但不在 MCP 目录里。** WorkBuddy 的「连接器」就是 MCP 上架通道：
+四个文件（`connector-meta.json` / `mcp.json` / `icon.svg` / 可选 `skills/`）打成 zip，
+上限 20 MB，远程端点写 `type: "streamableHttp"` 即可，**不用自己起服务、不用写代码**。
+审核 10–15 分钟生效，比技能快得多。但它**不参与收费** —— 连接器做曝光，技能做变现。
+
 完整清单、`server.json` 约束、目录自检三件套、以及服务侧四条「不报错但结果为空」的静默错误，
-见 [references/mcp-registries.md](references/mcp-registries.md)。文案类踩坑见
+见 [references/mcp-registries.md](references/mcp-registries.md)。连接器的包结构与认证三选一见
+[references/workbuddy-connector.md](references/workbuddy-connector.md)。文案类踩坑见
 [references/pitfalls.md](references/pitfalls.md) 的「文案相关」。
 
 ## 开工前的三步体检
