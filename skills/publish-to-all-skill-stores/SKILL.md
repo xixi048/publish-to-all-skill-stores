@@ -1,10 +1,10 @@
 ---
 name: publish-to-all-skill-stores
-description: "Publish one skill to every agent-skill store at once — at home and abroad, free and paid. Use it when the user asks to publish / upload / list / 上架 / 推送 a skill to skill stores, skill marketplaces, 技能商店, 技能市场, plugin marketplaces, or asks why a published skill is not being discovered. Covers repo layout for auto-indexers, public submit APIs, GitHub-PR registries, login-gated CLIs, platform-hosted stores that need porting, and how to price a paid listing. 关键词：上架技能、推送技能、技能商店、技能市场、skill store、marketplace、publish skill、被收录、署名。"
+description: "Publish one skill to every agent-skill store at once — at home and abroad, free and paid. Use it when the user asks to publish / upload / list / 上架 / 推送 a skill to skill stores, skill marketplaces, 技能商店, 技能市场, plugin marketplaces, or asks why a published skill is not being discovered. Covers repo layout for auto-indexers, public submit APIs, GitHub-PR registries, login-gated CLIs, platform-hosted stores that need porting, and how to price a paid listing. 关键词：上架技能、推送技能、技能商店、技能市场、虾评、xiaping、skill store、marketplace、publish skill、被收录、署名。"
 license: MIT
 metadata:
   author: xixi048
-  version: "2.0.4"
+  version: "2.1.0"
   language: zh-CN
 ---
 
@@ -20,14 +20,28 @@ metadata:
 |---|---|---|---|
 | 仓库自动索引 | 改仓库本身（路径 + topics + README） | skills.sh、SkillsMP、claude-plugins.dev | ✅ 完全 |
 | 公开提交接口 | 一条 HTTP POST | skillstore.io、skillsmd.dev、skillbay.sh | ✅ 完全 |
+| **Agent 自注册 API** | 自己申请一个 Agent 账号拿 Key，再 POST | **虾评 XiaPing** | ✅ 完全（**仅版权承诺要问主人**） |
 | GitHub PR | fork → 加文件 → PR | buildwithclaude、awesome 列表、社区 registry | ✅ 完全（需 GitHub 写权限） |
 | 登录式 CLI / OAuth 表单 | 先登录再发 | ClawHub、Tank、Cow Skill Hub、agentskill.sh | ⚠️ 缺凭据就停 |
-| 平台托管 | **把技能用平台方言重写** | 扣子 Coze、智谱 AgentMore、GPT Store | ❌ 是另一个开发项目 |
+| 平台托管 | **把技能用平台方言重写** | 扣子 Coze 技能商店、智谱 AgentMore、GPT Store | ❌ 是另一个开发项目 |
 | MCP 目录 | **先把技能包成 MCP server** | Smithery、Glama、mcp.so、PulseMCP、Cursor Directory | ❌ 是另一个开发项目 |
 
 只有前四类是「推送」，第五类是「移植」。不要在第五类上假装能"一键推送"。
 
-完整渠道表（**36 个**，含国内外、免费与付费、验证等级；含 MCP 目录群、CLI 注册中心、国内第二批）见
+**「平台托管」这类里最容易被搞混的一对：扣子技能商店 ≠ 虾评。** 同属扣子生态，但是两条完全不同的路：
+
+| | 扣子技能商店 | 虾评 XiaPing |
+|---|---|---|
+| 入口 | `www.coze.cn/skills` | `xiaping.coze.com` |
+| 谁能发 | 人类开发者 + **技能上架资质**（专业领域 + 资质证明，10 个工作日） | **只有 Agent**，官方明说「不支持人工注册」 |
+| 提交动作 | 扣子编程里自然语言重写 → 部署 → 我的技能 → 上架 | 一条 `POST /api/skills` |
+| 适合 | 律所/医院/学校/持证自媒体 | 通用工具、兴趣创作、开源项目 |
+
+用户说「提交到扣子」时，先分清他要的是商店还是虾评。**通用工具与兴趣类技能在扣子是过不了资质关的，
+官方文档自己就建议去虾评。** 虾评是这类需求唯一能全自动落地的答案，配方见
+[references/xiaping.md](references/xiaping.md)。
+
+完整渠道表（**37 个**，含国内外、免费与付费、验证等级；含 MCP 目录群、CLI 注册中心、国内第二批）见
 [references/store-registry.md](references/store-registry.md)。
 
 **清单本身是会长大的，别拿上一轮的清单当全集。** 每轮开工前花五分钟重新扫一遍：
@@ -54,6 +68,10 @@ gh search repos "skill marketplace" --sort stars --limit 40
    - 布局与清单**两者都要**，它们分别喂给不同的爬虫
 2. **自动索引型**：布局改完就等爬虫；用 `npx skills add <owner>/<repo>` 触发首次安装来播种 telemetry
 3. **公开 API 型**：`python scripts/submit_all.py --all --repo <url>`
+3.5. **虾评**：注册 → 拿 Key → 逐个 `POST /api/skills`。这一步**只有一个卡点**：版权承诺必须
+   由用户本人确认（把平台原文照抄给他，别总结），拿到"同意"后追加 `pledge={"agreed":true}`。
+   上传配额由等级压制（注册送 30 虾米 = A2 = **只有 3 个名额**），先把最想曝光的三个排好序。
+   发布后默认**试用版**，转正要 20 篇评测 + 加权 ≥ 4，别指望发完就有流量。
 4. **PR 型**：按各仓库 CONTRIBUTING 的位置加一个 `<name>/SKILL.md`
 5. **登录型**：先把物料备好，缺凭据就明确告诉用户"这一步需要你登录"
 6. **社区列表 / PR 型长尾**：awesome 列表与官方示例仓库，一次一条 PR，别刷

@@ -22,7 +22,7 @@ on the ones that will never accept a file drop:
 
 ## What's new in v2
 
-- channel registry 24 → **36** (adds LobeHub, agentskills.in, XFYUN Astron, the MCP-side directories, official repos, the CN second tier, and the `/.well-known/agent-skills/index.json` discovery endpoint)
+- channel registry 24 → **37** (adds LobeHub, agentskills.in, XFYUN Astron, the MCP-side directories, official repos, the CN second tier, XiaPing, and the `/.well-known/agent-skills/index.json` discovery endpoint)
 - a named rule for whether a store is real: **no receipt id and no PR means it did not happen**
 - paid research: **payment depends on form, not on channel** — Tencent SkillPay is 0-cut but only accepts backend-backed "Pay Skill"
 
@@ -89,7 +89,7 @@ call them directly:
 }
 ```
 
-Tools: `skill_store_registry` (36 channels), `skill_preflight` (readiness check),
+Tools: `skill_store_registry` (37 channels), `skill_preflight` (readiness check),
 `skill_build_package` (zip shape stores ask for).
 
 ## Machine-discoverable index
