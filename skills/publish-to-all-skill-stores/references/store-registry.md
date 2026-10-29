@@ -167,6 +167,82 @@ Official MCP Registry ／ **Smithery**（smithery.ai）／ **Glama**（glama.ai�
 | **小红书 Red Skill** | 小红书 | 仅支持 Markdown 等有限格式 | △ |
 | **美团 虾345（xia345）** | 美团 | Skill Hunter 跨平台聚合 SkillHub / ClawHub；"入驻即入全生态" | △ 域名未核实（xia345.com 实为 AI345 资讯站） |
 | **WorkBuddy 开放平台** | open.workbuddy.cn | 技能 / 专家 / 连接器；本地 `.workbuddy/skills/` 是另一回事 | 上传 zip（≤3MB、两层、8 必填字段）→ 审核 → 开收款 → 定价 | ✅ 付费，内测抽 1% |
+| **腾讯 游点灵 Skill Center** | craft.qq.com/skill-center | **真收标准 `SKILL.md`**（`.zip` 或单 `.md`），网页表单上传 → 提交审核 | ✅ 入口与全部字段已实测，详见 [7.5.1](#751-腾讯游点灵-skill-center腾讯-ai-游戏创作平台的技能市场) |
+
+### 7.5.1 腾讯 游点灵 Skill Center（腾讯 AI 游戏创作平台的技能市场）
+
+腾讯「游点灵」（craft.qq.com）是对话式 AI 游戏创作平台，2026 年上线了**技能中心**。
+这是国内少见的、**个人可直接发布标准 `SKILL.md` 技能**的官方市场 —— 和腾讯 SkillHub 是两套东西，
+和站内「技能编辑器」（那是游戏内技能时间轴编排工具，`/tool-skill`）更是两回事，别混。
+
+| 项 | 实测结果 |
+|---|---|
+| 入口 | `https://craft.qq.com/skill-center`（未登录会 302 到 `/chat?redirect=/skill-center`） |
+| 登录 | **微信登录 / QQ 登录**，两条都是扫码，无账号密码，无 GitHub OAuth |
+| 发布位置 | 技能中心 → 「我的技能」→ 右上角 **【发布技能】** |
+| 包格式 | **`.zip` 或单个 `.md`**；zip 内**必须含 `SKILL.md`**，否则前端直接报「上传失败，缺少 SKILL.md 文件」 |
+| 包大小 | **≤ 5MB**（超了报「文件过大，请选择5MB以内的文件」） |
+| 封面图 | 仅 JPG/PNG，**单张 ≤ 2MB**，最多 3 张案例图（选填，可挂跳转链接） |
+| 名称 | **3–10 个字**（超范围前端拦住） |
+| 简介 | 一句话描述（brief），另有详细描述 **200 字内** |
+| 类型 `sub_category` | 五选一：`content_design` 内容策划 · `dev_tool` 开发工具 · `art_effect` 美术特效 · `system` 系统 · `other` 其他 |
+| 适用引擎 `engine` | 下拉选择，取值来自 `/api/ms/gamemeta/engine-display-names`（需登录，动态配置）。筛选项有「全部引擎」 |
+| 流程 | 提交审核 → `pending` → 通过才公开；**审核中不可修改**（`审核中不可修改`），可下架 / 重新发布 / 删除 |
+| 版本 | 有版本概念：作者端 `republish`，用户端「有新版本可更新」→ 一键升级 |
+| 配额 | 单用户最多启用 **50 个**技能 |
+
+底层接口（都是登录态 + FormData，可脚本化但需带 Cookie）：
+
+```
+POST /api/ms/skill                        # 创建，FormData:
+                                          #   name / brief / description / sub_category / engine
+                                          #   file（skill 包）/ kept_images（JSON）
+                                          #   use_cases（JSON）/ show_use_cases
+PUT  /api/ms/skill/{id}                   # 更新（同一套字段）
+POST /api/ms/skill/{id}/delist            # 下架
+POST /api/ms/skill/{id}/republish         # 重新发布
+DELETE /api/ms/skill/{id}                 # 删除
+GET  /api/ms/skill?category=&engine=&page=  # 列表，支持 sub_category / engine 过滤
+GET  /api/ms/skill/me/created             # 我的技能（按 audit_status 过滤）
+```
+
+**为什么值得单独列**：站内技能的定义就是「AI 提前练好的本事，帮你在游戏里快速做出复杂功能」，
+和 `SKILL.md` 的语义完全对齐 —— 所以**不用移植、不用包 MCP、不用改写成插件**，
+Frontmatter 用标准的 `name` / `description` / `license` 即可，平台自己生成 `manifest.json`。
+
+#### ⚠️ 最贵的一个坑：禁止 `.py`，脚本型技能必须先改写成纯 md
+
+原包里带 `scripts/fs_api.py` 时，提交被后端静默拒绝：
+
+```json
+{"code":10001,"message":"包含禁止文件类型 scripts/fs_api.py"}
+```
+
+**前端不给任何提示**（弹窗不关、无 toast、按钮回弹成可点），只有挂 `fetch`/`XHR` 钩子才看得到。
+这是硬限制，不是路径问题 —— 所以**任何依赖本地脚本的技能都得先出一个纯 `.md` 版本**
+（把「跑脚本」改成「直接 `curl` 调 REST / 让 Agent 自己发请求」），再提交。
+
+判定依据：前端 `accept=".zip,.md"`，后端对 zip 内容做黑名单校验。
+`.md`、`references/*.md` 都能过，`scripts/*.py` 一定被拒。
+
+#### 实测回执（2026-10-30）
+
+| 项 | 值 |
+|---|---|
+| 提交结果 | `code:0 ok`，`audit_status: pending_review` |
+| 技能 id | **123** |
+| 版本 | `latest_version_num: 1` |
+| 出包地址 | `https://file.craft.qq.com/prodqq/skills/123/v1.zip` |
+| manifest | `https://file.craft.qq.com/prodqq/skills/123/v1/manifest.json` |
+| 类型 / 引擎 | `art_effect` / `engine:"1"`（引擎是**逗号分隔的 ID 串**：`1`=Hyper 沉浸、`2`=Flow、`3`=JS2D 轻捷、`4`=JS3D；官方自己的技能常见 `"1,2,3,4"` 全选） |
+| 作者 | 取腾讯账号昵称（QQ 头像），不是 GitHub 名 |
+| 上架包 | 8.3KB / 2 个 `.md`（`SKILL.md` + `references/api-contract.md`），根目录 `SKILL.md` |
+
+审核中状态在作者端显示为绿色「已发布」，**但社区列表要等 `audit_status` 转 `published` 才可见** ——
+别把作者端的「已发布」当成上线了。
+
+`engine` 多选是 checkbox（label > input[type=checkbox]），勾选要用 `check` 而不是 `click`；
+用 JS `el.click()` 点 label 不会改变 Vue 的 state。
 
 ### 7.6 API 目录（第四条线，旧版整条缺失）
 

@@ -171,3 +171,36 @@ ClawHub 上挂了一整轮的 `MIT-0 license terms must be accepted`，
 
 `apis.io`、`directory.llmstxt.cloud` 属于第一类：**表单能填满、值都在 FormData 里，
 但提交被拦**。这类渠道把字段备好、留给人工点一下最省事，不要反复重试浪费额度。
+
+## 提交"点了没反应"时，先挂请求钩子再改姿势
+
+腾讯游点灵的后端拒收 `.py` 时，前端**完全静默**：弹窗不关、没有 toast、按钮恢复可点，
+看起来就像"点击没生效"。我为此白试了三轮点击（JS click / ref click / CSS click），
+真正的原因只有一行：
+
+```json
+{"code":10001,"message":"包含禁止文件类型 scripts/fs_api.py"}
+```
+
+正确做法是**先挂 `fetch` + `XMLHttpRequest` 钩子**，点一次，读响应：
+
+```js
+window.__log=[]; const of=window.fetch;
+window.fetch=async function(...a){ const u=typeof a[0]==='string'?a[0]:a[0].url;
+  const r=await of.apply(this,a); const c=r.clone();
+  if(/keyword/i.test(u)) window.__log.push({u,m:(a[1]||{}).method,s:r.status,b:(await c.text()).slice(0,400)});
+  return r; };
+// 点完之后：JSON.stringify(window.__log)
+```
+
+这笔学费换来三条经验：
+
+- **「按钮 disabled 又自己变回可点」= 前端校验拦下了，不是网络失败**
+  （游点灵的提交按钮会在校验不通过时 disabled，在字段补全后自动恢复）
+- **「弹窗不关 + 无提示」= 请求发出去了但后端返回了业务错误码**，必须读响应体
+- 国内的平台普遍**禁可执行脚本**（`.py` / `.sh` / `.exe`），发布前先把技能做成纯 `.md` +
+  远程 HTTP 调用的形态；这不是某个平台的怪癖，是审核口径
+
+另外注意**作者端和社区端是两套状态**：游点灵在作者端把 `pending_review` 显示成绿色「已发布」，
+但社区列表要等 `published` 才可见。别急着宣布上线，去看 `audit_status` 原值。
+
