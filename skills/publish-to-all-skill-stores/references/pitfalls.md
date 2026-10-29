@@ -129,3 +129,45 @@ git -c credential.helper='' -c http.extraheader="Authorization: Basic $B64" \
 - **别轮询审核状态**。pending 就是 pending，反复查询只会让结果看起来更不确定。
 - 交付时必须把「已提交 / 待登录 / 需移植 / 已排除」分开写，
   否则用户会以为"全量推送"= 全部上线了。
+
+## 「服务端报错」不等于服务端不支持
+
+ClawHub 上挂了一整轮的 `MIT-0 license terms must be accepted`，
+所有证据都指向"该标记只在网页表单里，需本人勾选"。实际是 **CLI 版本落后 17 代**
+（本地 `clawhub@0.7.0`，线上 0.24.1）：升级后同一条 `publish` 直接通过。
+
+判定顺序应该是：
+
+1. `npm view <cli> version` 对比本地版本 —— 差 2 代以上就先升级，再谈"服务端强制"
+2. 看 CLI 报错的措辞：说"条款未接受"但 CLI 根本没有对应参数 → 大概率是**客户端没实现**
+3. 平台公告里出现 "X has moved / is no longer supported" → 旧 CLI 的流程已被废弃，
+   报什么错都没意义
+
+新版 ClawHub 另一个坑：`--source-repo` 与 `--source-commit` **必须成对**，
+只给 repo 会报 `must be provided together`（不是忽略，是硬报错）。
+
+## 浏览器登录态：借不过来，只能登一次
+
+- **复制 Chrome profile 拿不到登录态**。`Local State` + `Default/Network/Cookies`
+  一起复制也没用 —— Chrome 的 cookie 走 **App-Bound Encryption**，
+  换内核（Playwright 的 Chromium）解不开，表现为"cookie 数量对得上，但页面仍是未登录"。
+- **可行路径**：`playwright-cli open --profile <dir> --headed` 起一个常驻会话，
+  在窗口里**人工登录一次**，登录态写进该 profile，之后所有 GitHub OAuth 站点自动通。
+- **会话必须常驻**。`playwright-cli open` 的浏览器进程挂在当前 shell 的进程组下，
+  bash 一退出就被回收 → 后续命令报 `Browser 'x' is not open`。
+  正确做法是 `run_in_background` 跑 `open ... && sleep 7200`，让进程组活着。
+- `--browser chrome` 与 `--profile` 组合会卡死（系统 Chrome 单例）；**去掉 `--browser`**、
+  用自带 Chromium + `--profile` 就正常。
+- `--headed` 之外还有 `--persistent` 可选；不指定 `--idle-timeout` 时 headed 会话默认不过期。
+
+## 自动化会被哪些站直接挡掉
+
+| 现象 | 含义 | 判断方法 |
+|---|---|---|
+| `cf-turnstile-response` 为空、widget 无 iframe | Cloudflare Turnstile 在自动化下不渲染 | `eval` 读隐藏 input 的 value |
+| `ERR_TIMED_OUT` 但 `curl` 200 | 站点针对自动化浏览器超时（不是网络问题） | 同一 URL 分别用 curl 与浏览器打一次 |
+| `Too many submissions` | IP 级限流，换账号无用 | 等一小时或换出口 |
+| 「登录」按钮点击无反应 | 走扫码 / 私有 SDK，不是标准表单 | 看 DOM 里有没有 `<iframe>` 或 canvas |
+
+`apis.io`、`directory.llmstxt.cloud` 属于第一类：**表单能填满、值都在 FormData 里，
+但提交被拦**。这类渠道把字段备好、留给人工点一下最省事，不要反复重试浪费额度。

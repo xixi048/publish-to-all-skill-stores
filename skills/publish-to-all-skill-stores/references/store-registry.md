@@ -52,7 +52,7 @@
 | **ClawHub (openclaw)** | device-code 登录 → `clawhub skill publish ./<dir> --slug <slug> --version <v> --source-repo <url> --source-commit <sha>` | ✅ 实测已发 1.2.0（pending security scans） | ✅ |
 | **Tank (tankpkg.dev)** | `tank login` → `tank init` → `tank scan` → `tank publish` | ❌ CLI v0.16.5 认证接口报 Invalid request body | △ 官方文档 + 实测失败 |
 | **skilld.dev** | CLI 发布 | 登录后可以 | △ |
-| **Cow Skill Hub** | Web + GitHub/Google OAuth，上传 zip（SKILL.md 须在包根） | 匿名 POST 返回 401 | ✅ |
+| **Cow Skill Hub** | `skills.cowagent.ai/submit` · Web + GitHub/Google OAuth，上传 zip（SKILL.md 须在包根） | 匿名 POST 返回 401 | ✅ |
 | **agentskill.sh** | `/submit` SPA，贴仓库 URL → Analyze & Import | 未找到公开 POST 端点 | ✅（端点探测失败） |
 | **腾讯 SkillHub** | 已改域名 **skillhub.cn**（旧 skillhub.tencent.com 301 跳转），网页提交 | 需登录 | ✅ 页面可达 |
 
