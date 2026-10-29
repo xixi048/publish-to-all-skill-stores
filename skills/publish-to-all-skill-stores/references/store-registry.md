@@ -88,6 +88,9 @@
 | hermeshub / skilldock.io / agentskills.io | 只在二手聚合文档里出现过，查不到实体 |
 | skillsplayground.com | 全站 403 |
 | agentskills.my / skillregistry.io | 连不上 |
+| **skillsdirectory.com** | `/api/op/op1` 是登录墙，匿名提交无路 |
+| **skillmd.com** | 有 `/api/skills/upload` 端点，但**未实测通过**，提交前先小流量试一次 |
+| **mcpindex.dev** | `/submit` 返回 **500**，它自己的 Supabase RLS 坏了 —— 别浪费时间（详见 [cn-mcp-platforms.md](cn-mcp-platforms.md) 第二节） |
 
 ## 七、第二轮补遗（第一版容易漏掉的一批）
 
@@ -131,6 +134,10 @@ Official MCP Registry ／ **Smithery**（smithery.ai）／ **Glama**（glama.ai�
 完整的 `server.json` 约束、命名空间验证、目录自检三件套与静默错误清单，
 见 [mcp-registries.md](mcp-registries.md)。
 
+**国内 MCP 平台是另一套玩法**（多数要求把代码托管给平台重新部署，不是填个 URL 就完事）：
+魔搭 / 阿里云百炼 / 百度 MCP World / AIBase / 讯飞 MCP / 火山 ATS / 华为云 ModelArts，
+逐站实测与魔搭表单三坑见 [cn-mcp-platforms.md](cn-mcp-platforms.md)。
+
 ### 7.4 官方与社区列表（PR 型）——已逐个查过 pull_request_creation_policy
 
 | 仓库 | 外部能否开 PR | 结论 |
@@ -160,6 +167,27 @@ Official MCP Registry ／ **Smithery**（smithery.ai）／ **Glama**（glama.ai�
 | **小红书 Red Skill** | 小红书 | 仅支持 Markdown 等有限格式 | △ |
 | **美团 虾345（xia345）** | 美团 | Skill Hunter 跨平台聚合 SkillHub / ClawHub；"入驻即入全生态" | △ 域名未核实（xia345.com 实为 AI345 资讯站） |
 | **WorkBuddy 开放平台** | open.workbuddy.cn | 技能 / 专家 / 连接器；本地 `.workbuddy/skills/` 是另一回事 | 上传 zip（≤3MB、两层、8 必填字段）→ 审核 → 开收款 → 定价 | ✅ 付费，内测抽 1% |
+
+### 7.6 API 目录（第四条线，旧版整条缺失）
+
+技能商店收 `SKILL.md`，MCP 目录收跑着的 server，**API 目录收的是「HTTP 端点 + OpenAPI」**。
+只要有公开端点，这条线是唯一能全自动的一条（一条 POST 或一条 PR，不用登录、不用移植）。
+
+| 渠道 | 提交动作 | 验证 |
+|---|---|---|
+| **Agent402** | `POST https://agent402.tools/api/index/register` body `{"origin":"https://<domain>"}` | ✅ 实测 |
+| **public-apis**（49 万★） | GitHub PR，`Art & Design` 分类按字母序插一行 | ✅ 实测 PR #8482 |
+| **public-api-lists / APIs.guru / langchain** | GitHub PR | △（APIs.guru 的 CI 校验极严） |
+| **apis.io** | `POST` 一份 `apis.json`，人工审核 | △ |
+| **x402.new / x402-trust** | 自动抓 / 放 `.well-known` 声明 | △ |
+| **x402scan** | 需**收款钱包**签 SIWx | ⏸ 链上身份 |
+| **CDP Bazaar / agentic.market** | **被真实支付过一次才进索引**（自付约 $0.10） | ⏸ 链上身份 |
+| **RapidAPI / Postman API Network / publicapis.io / apilist.fun / publicapis.dev** | 需商家账号 | ⏸ 需登录 |
+| **国内（阿里云云市场 / A集市 / 聚合数据）** | **全部要企业资质**（正规公司 + 10 人团队 + 1 年经验） | ❌ 个人死路 |
+| **扣子插件商店** | 国内唯一支持个人上架自有 API 的渠道，收 OpenAPI | ✅ 详见 [coze-plugin.md](coze-plugin.md) |
+
+完整配方、Agent402 返回值怎么读、public-apis 的 fork 镜像坑、以及提交前必须满足的四条，
+见 [api-directories.md](api-directories.md)。
 
 ### 7.6 自建发现端点 —— 已实测跑通（两个技能都进去）
 

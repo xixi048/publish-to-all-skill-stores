@@ -1,10 +1,10 @@
 ---
 name: publish-to-all-skill-stores
-description: "Publish one skill to every agent-skill store at once — at home and abroad, free and paid. Use it when the user asks to publish / upload / list / 上架 / 推送 a skill to skill stores, skill marketplaces, 技能商店, 技能市场, plugin marketplaces, or asks why a published skill is not being discovered. Covers repo layout for auto-indexers, public submit APIs, GitHub-PR registries, login-gated CLIs, platform-hosted stores that need porting, and how to price a paid listing. 关键词：上架技能、推送技能、技能商店、技能市场、虾评、xiaping、skill store、marketplace、publish skill、被收录、署名。"
+description: "Publish one skill to every agent-skill store at once — at home and abroad, free and paid. Use it when the user asks to publish / upload / list / 上架 / 推送 a skill to skill stores, skill marketplaces, 技能商店, 技能市场, plugin marketplaces, or asks why a published skill is not being discovered. Covers repo layout for auto-indexers, public submit APIs, GitHub-PR registries, login-gated CLIs, platform-hosted stores that need porting, and how to price a paid listing. 关键词：上架技能、推送技能、技能商店、技能市场、虾评、xiaping、skill store、marketplace、publish skill、被收录、署名、API 目录、MCP 目录、国内渠道。"
 license: MIT
 metadata:
   author: xixi048
-  version: "2.1.0"
+  version: "2.2.0"
   language: zh-CN
 ---
 
@@ -41,7 +41,7 @@ metadata:
 官方文档自己就建议去虾评。** 虾评是这类需求唯一能全自动落地的答案，配方见
 [references/xiaping.md](references/xiaping.md)。
 
-完整渠道表（**37 个**，含国内外、免费与付费、验证等级；含 MCP 目录群、CLI 注册中心、国内第二批）见
+完整渠道表（**40+ 个**，含国内外、免费与付费、验证等级；含 MCP 目录群、CLI 注册中心、国内第二批）见
 [references/store-registry.md](references/store-registry.md)。
 
 **清单本身是会长大的，别拿上一轮的清单当全集。** 每轮开工前花五分钟重新扫一遍：
@@ -134,6 +134,43 @@ SKILL.md 的 frontmatter 本身保持英文（它是给模型读的），本地�
 **四、文案在第一次提交前定死，尤其别写会过期的数量。** `762 words / 598 styles` 这种是当前快照，
 词库一扩就失真，而它同时躺在 README、包描述、`server.json` 和几个目录站后台里。
 写能力不写数量。目录站大多没有自助编辑入口，改一次要重发版本再排一次队。
+
+**五、国内平台是第三种形态，别拿海外的经验套。** 魔搭 / 百炼 / MCP World / AIBase / 讯飞 MCP
+多数是**平台托管**：不是填 URL，而是把代码交出去让平台重新部署，之后两套端点要同步维护。
+魔搭的「GitHub 快速创建」在境内读不到 GitHub（会谎报 README 缺失），只能走自定义创建，
+且表单有三个坑（托管类型漏选静默失败 / Monaco 编辑器只能剪贴板粘贴 / antd 按钮文本中间带空格）。
+逐站实测见 [references/cn-mcp-platforms.md](references/cn-mcp-platforms.md)。
+
+## API 目录（第四条线，别漏了）
+
+同一个产品最多可以走四条线，**每条收的东西都不一样**：
+
+| 线 | 交付物 | 全自动? |
+|---|---|---|
+| 技能商店 | `SKILL.md` | 部分（公开 API 型可以） |
+| MCP 目录 | 跑着的 MCP server | 部分 |
+| **API 目录** | **HTTP 端点 + OpenAPI / llms.txt** | **✅ 最高，一条 POST 或一条 PR** |
+| 平台托管 | 用平台方言重写 | ❌ 是另一个项目 |
+
+**只要手上有公开 HTTP 端点，这条线就一定要走**——它是唯一不用登录、不用移植、
+还能一条命令拿到回执的一条。最低限度三条：
+
+```bash
+# 1. x402 / 付费 API 索引：一条 POST，返回里盯 toolCount 与 health
+curl -X POST https://agent402.tools/api/index/register \
+     -H "Content-Type: application/json" -d '{"origin":"https://<domain>"}'
+
+# 2. public-apis（49 万★）：fork → 在 Art & Design 按字母序插一行 → PR
+#    注意 fork 的远端可能被 insteadOf 改写成 ghfast 镜像，推之前先
+#    git remote set-url origin git@github.com:<user>/public-apis.git
+
+# 3. 扣子插件商店：国内唯一支持个人上架自有 API 的渠道（阿里云/聚合数据都要企业资质）
+```
+
+提交前必须满足四条：`/openapi.json` 可公开访问且与端点数一致、有 `/llms.txt`、
+**免费端点不带任何 token 就能调通**（402 端点会被目录站的调试环节判失败）、描述里不写会过期的固定数量。
+
+完整清单与坑见 [references/api-directories.md](references/api-directories.md)。
 
 **五、MCP 本身也能上架，但不在 MCP 目录里。** WorkBuddy 的「连接器」就是 MCP 上架通道：
 四个文件（`connector-meta.json` / `mcp.json` / `icon.svg` / 可选 `skills/`）打成 zip，
